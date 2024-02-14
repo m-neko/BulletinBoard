@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>電子掲示板</title>
+</head>
+<body>
+	<h2>電子掲示板</h2>
+	<form th:action="@{/}" method="post">
+	<table border="1">
+	<tr><td>ハンドルネーム</td><td><input type="text" name="handle_name"></td></tr>
+	<tr><td>メールアドレス</td><td><input type="email" name="email"></td></tr>
+	<tr><td>投稿内容</td><td><textarea rows="10" cols="50" name="contents"></textarea></td></tr>
+	</table>
+	<button type="submit">投稿</button>
+	</form>
+	<hr>
+	<div th:each="d:${dataList}">
+		<h4>[[${d.handle_name}]]</h4>
+		<a th:href="@{'mailto:' + ${d.email}}">[[${d.email}]]</a>
+		<p>[[${#dates.format(d.create_time,'yyyy/MM/dd HH:mm:ss')}]]</p>
+		<p>[[${d.contents}]]</p>
+		<hr>
+	</div>
+</body>
+</html>
