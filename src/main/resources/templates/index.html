@@ -6,6 +6,9 @@
 </head>
 <body>
 	<h2>電子掲示板</h2>
+	<div th:if="${errorData}" th:each="error:${errorData}">
+		<span th:text="${error}" style="color:red;"></span>
+	</div>
 	<form th:action="@{/}" method="post">
 	<table border="1">
 	<tr><td>ハンドルネーム</td><td><input type="text" name="handle_name"></td></tr>
@@ -15,7 +18,7 @@
 	<button type="submit">投稿</button>
 	</form>
 	<hr>
-	<div th:each="d:${dataList}">
+	<div style="overflow-wrap: break-word;" th:each="d:${dataList}">
 		<h4>[[${d.handle_name}]]</h4>
 		<a th:href="@{'mailto:' + ${d.email}}">[[${d.email}]]</a>
 		<p>[[${#dates.format(d.create_time,'yyyy/MM/dd HH:mm:ss')}]]</p>
