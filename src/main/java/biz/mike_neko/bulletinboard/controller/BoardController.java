@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import biz.mike_neko.bulletinboard.form.MainFormData;
 import biz.mike_neko.bulletinboard.repository.BoardData;
 import biz.mike_neko.bulletinboard.repository.BoardRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 
 @Controller
 @AllArgsConstructor
@@ -28,7 +30,7 @@ public class BoardController {
 	
 	@GetMapping("/")
 	public String getContents(Model model) {
-		List<BoardData> dataList = repo.findAll();
+		List<BoardData> dataList = repo.findAllByOrderByIdDesc();
 		model.addAttribute("dataList", dataList);
 		return "index";
 	}
