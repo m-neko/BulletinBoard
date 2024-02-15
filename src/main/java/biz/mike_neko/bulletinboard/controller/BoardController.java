@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,14 +32,14 @@ public class BoardController {
 	private final BoardRepository repo;
 	
 	@GetMapping("/")
-	public String getContents(Model model) {
-		List<BoardData> dataList = repo.findAllByOrderByIdDesc();
+	public String getContents(Model model, @PageableDefault(page=0, size=10, sort="id") Pageable pageable) {
+		Page<BoardData> dataList = repo.findAllByOrderByIdDesc(pageable);
 		model.addAttribute("dataList", dataList);
 		return "index";
 	}
 	
 	@PostMapping("/")
-	public String postContents(@ModelAttribute @Validated MainFormData mainFormData, BindingResult result, Model model) {
+	public String postContents(@ModelAttribute @Validated MainFormData mainFormData, BindingResult result, Model model, Pageable pageable) {
 		BoardData bd = new BoardData();
 		bd.setHandle_name(mainFormData.getHandle_name());
 		bd.setEmail(mainFormData.getEmail());
@@ -51,7 +54,7 @@ public class BoardController {
 				list.add(e.getDefaultMessage());
 			}
 			model.addAttribute("errorData", list);
-			return getContents(model);
+			return getContents(model, pageable);
 		}
 		return "redirect:/";
 	}

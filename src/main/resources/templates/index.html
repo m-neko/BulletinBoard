@@ -25,5 +25,22 @@
 		<p>[[${d.contents}]]</p>
 		<hr>
 	</div>
+	<div>
+		<span th:text="|${dataList.getNumber()+1} / ${dataList.getTotalPages()}|"></span>
+		<ul style="list-style:none; display:flex; padding:0px;">
+			<li style="margin-right:10px;">
+				<span th:if="${dataList.isFirst()}">←前</span>
+				<a th:unless="${dataList.isFirst()}" th:href="@{/(page=${dataList.getNumber()-1})}">←前</a>
+			</li>
+			<li style="margin-right:10px;" th:each="i:${#numbers.sequence(0,dataList.getTotalPages()-1)}">
+				<span th:if="${i==dataList.getNumber()}" th:text="${i+1}"></span>
+				<a th:if="${i!=dataList.getNumber()}" th:href="@{/(page=${i})}" th:text="${i+1}"></a>
+			</li>
+			<li style="margin-right:10px;">
+				<span th:if="${dataList.isLast()}">次→</span>
+				<a th:unless="${dataList.isLast()}" th:href="@{/(page=${dataList.getNumber()+1})}">次→</a>
+			</li>
+		</ul>
+	</div>
 </body>
 </html>
